@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Oefententamen.Models.Klant>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Naam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Woonplaats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.Raw("Reserveringen");
+            </th>
+            <th>
+                @Html.Raw("Prijs");
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Naam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Woonplaats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @{
+                    int count = 0;
+                    foreach (Reservering reservering in item.Reserveringen)
+                    {
+                        if (count++ % 4 == 0)
+                        {
+                            @:<br />
+                        }
+                        @Html.Raw($"{reservering.Naam} ")
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prijs)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a class="btn btn-primary" asp-action="EditWithKlantId" asp-controller="Reservering" asp-route-id="@item.Id">Reserveren</a>
+            </td>
+        </tr>
+}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td><strong>Aantal klanten is: @Model.Count()</strong></td>
+        </tr>
+    </tfoot>
+</table>
